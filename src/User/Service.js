@@ -6,7 +6,7 @@ const { roles } = require('../enums');
 class Service {
     async findAll() {
         try {
-            let users = await Model.find({});
+            let users = await Model.findAll({});
             return users;
         } catch (e) {
             return null;
@@ -26,7 +26,7 @@ class Service {
 
     async update(user, id) {
         try {
-            let updated = await Model.findByIdAndUpdate(id, user);
+            let updated = await Model.findByPk(id).update(user);
             return updated;
         } catch (e) {
             return null;
@@ -35,7 +35,7 @@ class Service {
 
     async delete(id) {
         try {
-            await Model.findByIdAndRemove(id);
+            await Model.findByPk(id).destroy();
             return '';
         } catch (e) {
             return null;
@@ -44,7 +44,7 @@ class Service {
 
     async exists(email) {
         try {
-            let user = await Model.find({ email });
+            let user = await Model.findAll({ email });
             if (user[0]) {
                 return true;
             }
@@ -100,7 +100,7 @@ class Service {
             }
             return user;
         } catch (e) {
-            return 'erro';
+            return 'Body vazio';
         }
     }
 }

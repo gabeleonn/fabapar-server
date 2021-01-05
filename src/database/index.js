@@ -5,15 +5,18 @@ const { Sequelize } = require('sequelize');
 const { database } = require('../config');
 
 //MODEL IMPORTS
+const Department = require('../Department');
+const User = require('../User');
 
 //CREATE CONNECTION
 const connection = new Sequelize(database);
 
 //INIT MODELS
-//User.Model.init(connection);
+Department.Model.init(connection);
+User.Model.init(connection);
 
 //INIT RELATIONS
-//User.Model.associate(connection.models);
+User.Model.associate(connection.models);
 
 //EXPORTS
 module.exports = connection;

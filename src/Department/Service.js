@@ -17,7 +17,7 @@ class Service {
     async exists(name) {
         try {
             if (name !== undefined) {
-                let dept = await Model.find({ name });
+                let dept = await Model.findAll({ name });
                 if (dept[0]) {
                     return true;
                 }

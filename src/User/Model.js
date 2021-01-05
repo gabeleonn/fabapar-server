@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const { roles, departments } = require('../enums');
+const { roles } = require('../enums');
 
 const UserSchema = new Schema(
     {
@@ -11,12 +11,12 @@ const UserSchema = new Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         department: {
-            type: String,
-            enum: departments.enum,
-            default: departments.default,
+            type: Schema.Types.ObjectId,
+            ref: 'department',
             required: true,
         },
         branch: { type: String, maxlength: 4 },
+        leader: { type: Boolean, default: false },
         role: {
             type: String,
             enum: roles.enum,

@@ -1,11 +1,25 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Model, DataTypes } = require('sequelize');
 
-const schema = new Schema(
-    {},
-    {
-        timestamps: true,
+class User extends Model {
+    static init(connection) {
+        super.init(
+            {
+                firstname: DataTypes.STRING,
+                lastname: DataTypes.STRING,
+                email: DataTypes.STRING,
+                password: DataTypes.STRING,
+                role: DataTypes.STRING,
+            },
+            {
+                sequelize: connection,
+            }
+        );
     }
-);
 
-module.exports = mongoose.model('department', schema);
+    static associate(models) {
+        // this.hasOne(models.Address, { foreignKey: 'userId', as: 'address'} );
+        // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
+    }
+}
+
+module.exports = User;

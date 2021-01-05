@@ -38,6 +38,8 @@ Roda o servidor para desenvolvimento
     -   MongoDB
     -   Express
     -   Users Model
+-   1.0.1
+    -   Mysql (DB4Free)
 
 ## Meta
 

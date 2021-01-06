@@ -1,11 +1,21 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Model, DataTypes } = require('sequelize');
 
-const schema = new Schema(
-    {},
-    {
-        timestamps: true,
+class Ruined extends Model {
+    static init(connection) {
+        super.init(
+            {
+                name: DataTypes.STRING,
+            },
+            {
+                sequelize: connection,
+            }
+        );
     }
-);
 
-module.exports = mongoose.model('ruined', schema);
+    static associate(models) {
+        // this.hasOne(models.Address, { foreignKey: 'userId', as: 'address'} );
+        // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
+    }
+}
+
+module.exports = Ruined;

@@ -4,7 +4,13 @@ const { roles } = require('../../enums');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('users', {
+        await queryInterface.createTable('Users', {
+            id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+            },
             code: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -22,6 +28,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+            password: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             branch: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
@@ -33,18 +43,26 @@ module.exports = {
             },
             department: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references: {
-                    model: 'department',
+                    model: 'Departments',
                     key: 'id',
                 },
                 onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',
             },
+            createdAt: {
+                type: Sequelize.DATE,
+                allowNull: false,
+            },
+            updatedAt: {
+                type: Sequelize.DATE,
+                allowNull: false,
+            },
         });
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('users');
+        await queryInterface.dropTable('Users');
     },
 };

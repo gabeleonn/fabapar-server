@@ -1,7 +1,7 @@
 const Model = require('./Model');
 
 class Service {
-    async create(name) {
+    async create({ name }) {
         try {
             let exists = await this.exists(name);
             if (exists) {
@@ -10,6 +10,7 @@ class Service {
             let dept = await Model.create({ name });
             return dept;
         } catch (e) {
+            console.log(e);
             return { error: 'Erro no servidor', status: 500 };
         }
     }
@@ -17,7 +18,7 @@ class Service {
     async exists(name) {
         try {
             if (name !== undefined) {
-                let dept = await Model.findAll({ name });
+                let dept = await Model.findOne({ where: { name } });
                 if (dept[0]) {
                     return true;
                 }

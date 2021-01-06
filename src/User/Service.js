@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
-const Model = require('./Model');
 const Department = require('../Department');
 const { roles } = require('../enums');
+
+const Model = require('./Model');
 
 class Service {
     async findAll() {
@@ -9,42 +10,59 @@ class Service {
             let users = await Model.findAll({});
             return users;
         } catch (e) {
-            return null;
+            return { error: 'Server Error: Contate um administrador.' };
+        }
+    }
+
+    async findOne(code) {
+        try {
+            let user = await Model.findOne({ where: { code } });
+            if (user) {
+                return user;
+            }
+            return { error: 'Bad Request: Usuário não encontrado.' };
+        } catch (e) {
+            return { error: 'Server Error: Contate um administrador.' };
         }
     }
 
     async create(body) {
         try {
             let user = await this.cleanUser(body);
-            console.log(user);
-            //let createUser = await Model.create(body);
-            return user;
+
+            return await Model.create(user);
         } catch (e) {
-            return null;
+            return { error: 'Server Error: Contate um administrador.' };
         }
     }
 
-    async update(user, id) {
+    async update(user, code) {
         try {
-            let updated = await Model.findByPk(id).update(user);
-            return updated;
+            if (user.password) {
+                user = {
+                    ...user,
+                    password: await this.hashPassword(user.password),
+                };
+            }
+            return await Model.update(user, { where: { code } });
         } catch (e) {
-            return null;
+            return { error: 'Server Error: Contate um administrador.' };
         }
     }
 
-    async delete(id) {
+    async delete(code) {
         try {
-            await Model.findByPk(id).destroy();
-            return '';
+            return (await Model.destroy({ where: { code } })) === 0
+                ? { error: 'Server Error: Usuário não existe.' }
+                : 0;
         } catch (e) {
-            return null;
+            return { error: 'Server Error: Contate um administrador.' };
         }
     }
 
-    async exists(email) {
+    async exists(code) {
         try {
-            let user = await Model.findAll({ email });
+            let user = await Model.findAll({ code });
             if (user[0]) {
                 return true;
             }
@@ -56,6 +74,18 @@ class Service {
 
     async hashPassword(password) {
         return await bcrypt.hash(password, 10);
+    }
+
+    async login(user) {
+        return (await this.comparePassword(user))
+            ? null
+            : { error: 'Bad Request: Senha e/ou Usuário incorretos.' };
+    }
+
+    async comparePassword(user) {
+        let { email, password } = user;
+        let dbUser = await Model.findOne({ where: { email } });
+        return await bcrypt.compare(password, dbUser.password);
     }
 
     async cleanUser(user) {
@@ -78,7 +108,7 @@ class Service {
                 }
             });
             if (invalid) {
-                return 'campos a mais';
+                return { error: 'Bad Request: Confira o envio.' };
             }
             //Hashes the password
             user.password = await this.hashPassword(user.password);
@@ -86,21 +116,26 @@ class Service {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             const result = re.test(String(user.email).toLowerCase());
             if (!result) {
-                return 'email';
+                return { error: 'Bad Request: Favor inserir email válido.' };
             }
             //check for department
-            let dept = await Department.Model.findById(user.department);
+            const dept = await Department.Model.findOne({
+                where: { id: user.department },
+            });
             if (!dept) {
-                return 'dept';
+                return { error: 'Bad Request: Esse departamento não existe.' };
             }
             //validates the role
             let role = roles.enum.includes(user.role);
             if (!role) {
-                return 'role';
+                return {
+                    error: 'Bad Request: A role do usuário deve ser definida.',
+                };
             }
             return user;
         } catch (e) {
-            return 'Body vazio';
+            console.log(e);
+            return { error: 'Server Error: Contate um administrador.' };
         }
     }
 }

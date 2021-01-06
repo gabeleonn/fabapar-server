@@ -1,18 +1,13 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-
-const { roles } = require('../enums');
-
 const { Model, DataTypes } = require('sequelize');
 
-class Department extends Model {
+class User extends Model {
     static init(connection) {
         super.init(
             {
-                code: DataTypes.STRING,
+                code: DataTypes.INTEGER,
                 firstname: DataTypes.STRING,
                 lastname: DataTypes.STRING,
-                branch: DataTypes.STRING,
+                branch: DataTypes.INTEGER,
                 email: DataTypes.STRING,
                 password: DataTypes.STRING,
                 role: DataTypes.STRING,
@@ -33,4 +28,4 @@ class Department extends Model {
     }
 }
 
-module.exports = Department;
+module.exports = User;

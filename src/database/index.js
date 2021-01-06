@@ -16,7 +16,7 @@ Department.Model.init(connection);
 User.Model.init(connection);
 
 //INIT RELATIONS
-User.Model.associate(connection.models);
+//User.Model.associate(connection.models);
 
 //EXPORTS
 module.exports = connection;

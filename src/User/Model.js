@@ -11,7 +11,7 @@ class User extends Model {
                 email: DataTypes.STRING,
                 password: DataTypes.STRING,
                 role: DataTypes.STRING,
-                department: DataTypes.INTEGER,
+                department_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -20,9 +20,9 @@ class User extends Model {
     }
 
     static associate(models) {
-        this.hasOne(models.Department, {
-            foreignKey: 'department',
-            as: 'dept',
+        this.belongsTo(models.Department, {
+            foreignKey: 'department_id',
+            as: 'department',
         });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }

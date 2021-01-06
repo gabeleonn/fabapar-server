@@ -41,7 +41,7 @@ module.exports = {
                 defaultValue: roles.default,
                 allowNull: false,
             },
-            department: {
+            department_id: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {

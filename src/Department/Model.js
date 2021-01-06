@@ -13,7 +13,11 @@ class Department extends Model {
     }
 
     static associate(models) {
-        // this.hasOne(models.Address, { foreignKey: 'userId', as: 'address'} );
+        this.hasMany(models.User, { as: 'users' });
+        // this.belongsTo(models.User, {
+        //     foreignKey: 'id',
+        //     as: 'department',
+        // });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }
 }

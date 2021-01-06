@@ -30,7 +30,13 @@ class Controller {
         const code = req.params.code;
         const { password, department, branch, firstname, lastname } = req.body;
         const user = await Service.update(
-            { password, department, branch, firstname, lastname },
+            {
+                password,
+                department_id: department,
+                branch,
+                firstname,
+                lastname,
+            },
             code
         );
         if (!user.error) {

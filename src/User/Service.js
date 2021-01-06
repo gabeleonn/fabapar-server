@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const Department = require('../Department');
 const { roles } = require('../enums');
+const User = require('./Model');
 
 const Model = require('./Model');
 
@@ -16,12 +17,16 @@ class Service {
 
     async findOne(code) {
         try {
-            let user = await Model.findOne({ where: { code } });
+            let user = await Model.findOne({
+                include: [{ model: Department.Model, as: 'department' }],
+                where: { code },
+            });
             if (user) {
                 return user;
             }
             return { error: 'Bad Request: Usuário não encontrado.' };
         } catch (e) {
+            console.log(e);
             return { error: 'Server Error: Contate um administrador.' };
         }
     }
@@ -29,9 +34,9 @@ class Service {
     async create(body) {
         try {
             let user = await this.cleanUser(body);
-
             return await Model.create(user);
         } catch (e) {
+            console.log(e);
             return { error: 'Server Error: Contate um administrador.' };
         }
     }
@@ -101,7 +106,7 @@ class Service {
                 'email',
                 'password',
                 'role',
-                'department',
+                'department_id',
                 'branch',
             ];
             let invalid = false;
@@ -124,7 +129,7 @@ class Service {
             }
             //check for department
             const dept = await Department.Model.findOne({
-                where: { id: user.department },
+                where: { id: user.department_id },
             });
             if (!dept) {
                 return { error: 'Bad Request: Esse departamento não existe.' };

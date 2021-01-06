@@ -22,6 +22,8 @@ Equipment.Model.init(connection);
 //INIT RELATIONS
 Maintenance.associate(connection.models);
 Equipment.Model.associate(connection.models);
+Department.Model.associate(connection.models);
+User.Model.associate(connection.models);
 
 //EXPORTS
 module.exports = connection;

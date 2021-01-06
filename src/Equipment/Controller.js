@@ -8,6 +8,14 @@ class Controller {
         }
         return res.json(equipment);
     }
+
+    async findAll(req, res) {
+        let equipments = await Service.findAll();
+        if (equipments) {
+            return res.json(equipments);
+        }
+        return res.json(equipments);
+    }
 }
 
 module.exports = new Controller();

@@ -1,26 +1,17 @@
 const { Sequelize } = require('sequelize');
 const { Model, DataTypes } = require('sequelize');
 
-class Maintance extends Model {
+class Maintenance extends Model {
     static init(connection) {
         super.init(
             {
-                id: DataTypes.INTEGER,
                 date: DataTypes.DATE,
                 warranty: {
                     type: DataTypes.DATE,
                     defaultValue: Sequelize.NOW,
                 },
                 details: DataTypes.TEXT,
-                mantainer: DataTypes.STRING,
-                createdAt: {
-                    type: DataTypes.DATE,
-                    defaultValue: Sequelize.NOW,
-                },
-                updatedAt: {
-                    type: DataTypes.DATE,
-                    defaultValue: Sequelize.NOW,
-                },
+                maintainer: DataTypes.STRING,
             },
             {
                 sequelize: connection,
@@ -29,9 +20,12 @@ class Maintance extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Equipment, { foreignKey: 'id', as: 'maintance' });
+        this.belongsTo(models.Item, {
+            foreignKey: 'id',
+            as: 'maintenance',
+        });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }
 }
 
-module.exports = Maintance;
+module.exports = Maintenance;

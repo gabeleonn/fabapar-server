@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 const { categories, status } = require('../enums');
 
-class Equipment extends Model {
+class Item extends Model {
     static init(connection) {
         super.init(
             {
@@ -12,7 +12,7 @@ class Equipment extends Model {
                 details: DataTypes.TEXT,
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),
-                maintance: DataTypes.INTEGER,
+                maintenance_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -21,12 +21,12 @@ class Equipment extends Model {
     }
 
     static associate(models) {
-        this.hasOne(models.Maintance, {
-            foreignKey: 'maintance',
-            as: 'maintance',
+        this.hasOne(models.Maintenance, {
+            foreignKey: 'id',
+            as: 'maintenance',
         });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }
 }
 
-module.exports = Equipment;
+module.exports = Item;

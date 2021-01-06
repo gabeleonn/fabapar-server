@@ -1,20 +1,26 @@
 const Model = require('./Model');
-const Maintance = require('./Maintance');
+const Maintenance = require('./Maintenance');
 
 class Service {
     async create(equipment) {
         try {
-            console.log(equipment.maintance);
-            let maintance = await Maintance.create({
-                warranty: '12/11/2021',
-                mantainer: 'Gabriel NTI',
-                details: 'Hello',
-                date: '01/12/2020',
-            });
-            //let newEquipment = await Model.create(equipment);
-            return maintance;
+            let maintenance = await Maintenance.create(equipment.maintenance);
+            equipment = { ...equipment, maintenance_id: maintenance.id };
+            let newEquipment = await Model.create(equipment);
+            return newEquipment;
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    async findAll() {
+        try {
+            return await Model.findAll({
+                include: [{ model: Maintenance, as: 'maintenance' }],
+            });
+        } catch (e) {
+            console.log(e);
+            return { error: 'Server Error: ?' };
         }
     }
 }

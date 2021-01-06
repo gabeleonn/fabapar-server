@@ -4,7 +4,7 @@ const { categories, status } = require('../../enums');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Equipments', {
+        await queryInterface.createTable('Items', {
             id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -37,11 +37,11 @@ module.exports = {
                 defaultValue: status.default,
                 allowNull: false,
             },
-            maintance: {
+            maintenance_id: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'Maintances',
+                    model: 'Maintenances',
                     key: 'id',
                 },
                 onDelete: 'SET NULL',
@@ -59,6 +59,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Equipments');
+        await queryInterface.dropTable('Items');
     },
 };

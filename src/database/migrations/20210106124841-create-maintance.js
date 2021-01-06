@@ -2,7 +2,7 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Maintances', {
+        await queryInterface.createTable('Maintenances', {
             id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -21,7 +21,7 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: true,
             },
-            mantainer: {
+            maintainer: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
@@ -37,6 +37,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Maintances');
+        await queryInterface.dropTable('Maintenances');
     },
 };

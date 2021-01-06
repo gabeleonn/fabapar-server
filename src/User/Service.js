@@ -44,7 +44,11 @@ class Service {
                     password: await this.hashPassword(user.password),
                 };
             }
-            return await Model.update(user, { where: { code } });
+            let result = await Model.update(user, { where: { code } });
+            if (result[0] === 1) {
+                return await Model.findOne({ where: { code } });
+            }
+            return { error: 'Bad Request: Este campo não pode ser alterado.' };
         } catch (e) {
             return { error: 'Server Error: Contate um administrador.' };
         }

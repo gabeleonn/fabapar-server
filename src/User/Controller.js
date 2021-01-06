@@ -34,7 +34,7 @@ class Controller {
             code
         );
         if (!user.error) {
-            return res.status(204).json();
+            return res.status(200).json(user);
         }
         return res.status(400).json(user);
     }

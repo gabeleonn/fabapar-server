@@ -11,6 +11,7 @@ class Item extends Model {
                 description: DataTypes.STRING,
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),
+                user_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -23,7 +24,7 @@ class Item extends Model {
             foreignKey: 'equipment_id',
             as: 'maintenances',
         });
-        // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
+        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     }
 }
 

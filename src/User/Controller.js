@@ -28,7 +28,14 @@ class Controller {
 
     async update(req, res) {
         const code = req.params.code;
-        const { password, department, branch, firstname, lastname } = req.body;
+        const {
+            password,
+            department,
+            branch,
+            firstname,
+            lastname,
+            email,
+        } = req.body;
         const user = await Service.update(
             {
                 password,
@@ -36,6 +43,7 @@ class Controller {
                 branch,
                 firstname,
                 lastname,
+                email,
             },
             code
         );

@@ -7,7 +7,7 @@ class User extends Model {
                 code: DataTypes.INTEGER,
                 firstname: DataTypes.STRING,
                 lastname: DataTypes.STRING,
-                branch: DataTypes.INTEGER,
+                branch: DataTypes.STRING,
                 email: DataTypes.STRING,
                 password: DataTypes.STRING,
                 role: DataTypes.STRING,

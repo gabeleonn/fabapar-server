@@ -33,7 +33,7 @@ module.exports = {
                 allowNull: false,
             },
             branch: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
             },
             role: {

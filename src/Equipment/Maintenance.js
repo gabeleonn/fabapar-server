@@ -5,13 +5,13 @@ class Maintenance extends Model {
     static init(connection) {
         super.init(
             {
-                date: DataTypes.DATE,
                 warranty: {
                     type: DataTypes.DATE,
                     defaultValue: Sequelize.NOW,
                 },
                 details: DataTypes.TEXT,
                 maintainer: DataTypes.STRING,
+                equipment_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -21,8 +21,8 @@ class Maintenance extends Model {
 
     static associate(models) {
         this.belongsTo(models.Item, {
-            foreignKey: 'id',
-            as: 'maintenance',
+            foreignKey: 'equipment_id',
+            as: 'equipments',
         });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }

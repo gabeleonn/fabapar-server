@@ -9,10 +9,8 @@ class Item extends Model {
                 brand: DataTypes.STRING,
                 type: DataTypes.STRING,
                 description: DataTypes.STRING,
-                details: DataTypes.TEXT,
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),
-                maintenance_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -21,9 +19,9 @@ class Item extends Model {
     }
 
     static associate(models) {
-        this.hasOne(models.Maintenance, {
-            foreignKey: 'id',
-            as: 'maintenance',
+        this.hasMany(models.Maintenance, {
+            foreignKey: 'equipment_id',
+            as: 'maintenances',
         });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }

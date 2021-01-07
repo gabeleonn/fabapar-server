@@ -9,11 +9,6 @@ module.exports = {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            date: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                defaultValue: new Date(),
-            },
             warranty: {
                 type: Sequelize.DATE,
             },
@@ -32,6 +27,16 @@ module.exports = {
             updatedAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
+            },
+            equipment_id: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'Items',
+                    key: 'id',
+                },
+                onDelete: 'SET NULL',
+                onUpdate: 'CASCADE',
             },
         });
     },

@@ -8,7 +8,12 @@ const Model = require('./Model');
 class Service {
     async findAll() {
         try {
-            let users = await Model.findAll({});
+            let users = await Model.findAll({
+                include: {
+                    model: Department.Model,
+                    as: 'department',
+                },
+            });
             return users;
         } catch (e) {
             return { error: 'Server Error: Contate um administrador.' };
@@ -34,6 +39,7 @@ class Service {
     async create(body) {
         try {
             let user = await this.cleanUser(body);
+            console.log(user);
             return await Model.create(user);
         } catch (e) {
             console.log(e);
@@ -143,7 +149,6 @@ class Service {
             }
             return user;
         } catch (e) {
-            console.log(e);
             return { error: 'Server Error: Contate um administrador.' };
         }
     }

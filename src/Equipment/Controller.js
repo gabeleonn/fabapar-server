@@ -10,7 +10,8 @@ class Controller {
     }
 
     async findAll(req, res) {
-        let equipments = await Service.findAll();
+        let at = req.params.at;
+        let equipments = await Service.findAll(at);
         if (equipments) {
             return res.json(equipments);
         }

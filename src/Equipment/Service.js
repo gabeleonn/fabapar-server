@@ -6,6 +6,13 @@ class Service {
         try {
             let maintenance = { ...equipment.maintenance };
             delete equipment.maintenance;
+            if (typeof maintenance.warranty === 'undefined') {
+                maintenance = {
+                    warranty: '2019-01-01',
+                    maintainer: 'SISTEMA',
+                    details: 'Criado sem ter tido manutenção.',
+                };
+            }
             equipment = {
                 ...equipment,
                 description: `${equipment.type} ${equipment.brand}`.toUpperCase(),
@@ -20,9 +27,10 @@ class Service {
         }
     }
 
-    async findAll() {
+    async findAll(at) {
         try {
             return await Model.findAll({
+                where: { status: at },
                 include: [{ model: Maintenance, as: 'maintenances' }],
             });
         } catch (e) {

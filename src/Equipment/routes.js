@@ -4,7 +4,7 @@ const router = new Router();
 
 const Controller = require('./Controller');
 
-router.get('/', Controller.findAll);
+router.get('/:at', Controller.findAll);
 router.post('/', Controller.create);
 
 module.exports = router;

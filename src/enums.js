@@ -1,4 +1,8 @@
 module.exports = {
+    department: {
+        default: 'NTI',
+        enum: ['NTI', 'RH', 'MARKETING', 'FINANCEIRO', 'CAPTAÇÃO'],
+    },
     categories: {
         default: 'PERIFÉRICOS',
         enum: ['PERIFÉRICOS'],

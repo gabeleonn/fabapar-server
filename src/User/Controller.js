@@ -39,7 +39,7 @@ class Controller {
         const user = await Service.update(
             {
                 password,
-                department_id: department,
+                department,
                 branch,
                 firstname,
                 lastname,

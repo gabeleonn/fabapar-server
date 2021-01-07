@@ -1,19 +1,12 @@
 const bcrypt = require('bcrypt');
-const Department = require('../Department');
-const { roles } = require('../enums');
-const User = require('./Model');
+const { roles, department } = require('../enums');
 
 const Model = require('./Model');
 
 class Service {
     async findAll() {
         try {
-            let users = await Model.findAll({
-                include: {
-                    model: Department.Model,
-                    as: 'department',
-                },
-            });
+            let users = await Model.findAll();
             return users;
         } catch (e) {
             return { error: 'Server Error: Contate um administrador.' };
@@ -22,10 +15,7 @@ class Service {
 
     async findOne(code) {
         try {
-            let user = await Model.findOne({
-                include: [{ model: Department.Model, as: 'department' }],
-                where: { code },
-            });
+            let user = await Model.findOne({ where: { code } });
             if (user) {
                 return user;
             }
@@ -49,11 +39,13 @@ class Service {
 
     async update(user, code) {
         try {
-            if (user.password) {
+            if (user.password && user.password !== '') {
                 user = {
                     ...user,
                     password: await this.hashPassword(user.password),
                 };
+            } else {
+                delete user.password;
             }
             let result = await Model.update(user, { where: { code } });
             if (result[0] === 1) {
@@ -112,7 +104,7 @@ class Service {
                 'email',
                 'password',
                 'role',
-                'department_id',
+                'department',
                 'branch',
             ];
             let invalid = false;
@@ -134,11 +126,11 @@ class Service {
                 return { error: 'Bad Request: Favor inserir email válido.' };
             }
             //check for department
-            const dept = await Department.Model.findOne({
-                where: { id: user.department_id },
-            });
+            let dept = department.enum.includes(user.department);
             if (!dept) {
-                return { error: 'Bad Request: Esse departamento não existe.' };
+                return {
+                    error: 'Bad Request: Departamento não existe.',
+                };
             }
             //validates the role
             let role = roles.enum.includes(user.role);

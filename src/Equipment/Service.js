@@ -1,6 +1,5 @@
 const Model = require('./Model');
 const Maintenance = require('./Maintenance');
-const { Service: userService } = require('../User');
 const User = require('../User/Model');
 
 class Service {

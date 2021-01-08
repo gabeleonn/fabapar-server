@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 
-const { categories, status } = require('../enums');
+const { categories, status, department } = require('../enums');
 
 class Item extends Model {
     static init(connection) {
@@ -8,7 +8,9 @@ class Item extends Model {
             {
                 brand: DataTypes.STRING,
                 type: DataTypes.STRING,
+                specs: DataTypes.STRING,
                 description: DataTypes.STRING,
+                department: DataTypes.ENUM(department.enum),
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),
                 user_id: DataTypes.INTEGER,

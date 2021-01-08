@@ -13,6 +13,19 @@ class Service {
         }
     }
 
+    async getUsersEnum() {
+        try {
+            let users = await Model.findAll({
+                attributes: ['code', 'firstname', 'lastname'],
+            });
+
+            return users;
+        } catch (e) {
+            console.log(e);
+            return { error: 'Server Error: Contate um administrador.' };
+        }
+    }
+
     async findOne(code) {
         try {
             let user = await Model.findOne({ where: { code } });
@@ -29,7 +42,6 @@ class Service {
     async create(body) {
         try {
             let user = await this.cleanUser(body);
-            console.log(user);
             return await Model.create(user);
         } catch (e) {
             console.log(e);

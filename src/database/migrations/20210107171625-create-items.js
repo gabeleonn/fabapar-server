@@ -1,6 +1,6 @@
 'use strict';
 
-const { categories, status } = require('../../enums');
+const { categories, status, department } = require('../../enums');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
@@ -28,10 +28,18 @@ module.exports = {
                 defaultValue: categories.default,
                 allowNull: false,
             },
+            specs: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             status: {
                 type: Sequelize.ENUM(status.enum),
                 defaultValue: status.default,
                 allowNull: false,
+            },
+            department: {
+                type: Sequelize.ENUM(department.enum),
+                allowNull: true,
             },
             user_id: {
                 type: Sequelize.STRING,
@@ -43,6 +51,7 @@ module.exports = {
                 onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',
             },
+
             createdAt: {
                 type: Sequelize.DATE,
                 allowNull: false,

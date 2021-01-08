@@ -10,8 +10,8 @@
         "sequelize-cli": "^6.2.0"
     },
     "scripts": {
-        "devMode": "nodemon src/bin/server.js",
-        "start": "node src/bin/server.js"
+        "devMode": "node src/bin/server.js --inspect",
+        "start": "nodemon src/bin/server.js"
     },
     "devDependencies": {
         "dotenv": "^8.2.0",

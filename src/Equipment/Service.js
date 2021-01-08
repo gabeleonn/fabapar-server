@@ -10,12 +10,35 @@ class Service {
                 maintenance = {
                     warranty: '2019-01-01',
                     maintainer: 'SISTEMA',
-                    details: 'Criado sem ter tido manutenção.',
+                    details: 'Criado sem ter manutenção.',
                 };
+            }
+
+            if (equipment.status === 'FIXO' && equipment.department === '') {
+                console.log('wqe are here');
+                return {
+                    error:
+                        'Bad Request: Para equipamentos fixos deve-se ter o departamento.',
+                };
+            }
+            if (equipment.status !== 'FIXO') {
+                equipment = { ...equipment, department: null };
+            }
+            if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
+                return {
+                    error:
+                        'Bad Request: Para emprestimos deve-se ter um usuário.',
+                };
+            }
+            if (
+                equipment.status !== 'EMPRESTADO' ||
+                equipment.status !== 'FIXO'
+            ) {
+                equipment = { ...equipment, user_id: null };
             }
             equipment = {
                 ...equipment,
-                description: `${equipment.type} ${equipment.brand}`.toUpperCase(),
+                description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
             };
             let newEquipment = await Model.create(equipment);
             maintenance = { ...maintenance, equipment_id: newEquipment.id };
@@ -33,6 +56,15 @@ class Service {
                 where: { status: at },
                 include: [{ model: Maintenance, as: 'maintenances' }],
             });
+        } catch (e) {
+            console.log(e);
+            return { error: 'Server Error: ?' };
+        }
+    }
+
+    async delete(id) {
+        try {
+            return await Model.destroy({ where: { id } });
         } catch (e) {
             console.log(e);
             return { error: 'Server Error: ?' };

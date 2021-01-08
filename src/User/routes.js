@@ -6,6 +6,7 @@ const Controller = require('./Controller');
 
 router.post('/', Controller.create);
 router.get('/', Controller.findAll);
+router.get('/enum', Controller.getUsersEnum);
 router.get('/:code', Controller.findOne);
 router.patch('/:code', Controller.update);
 router.delete('/:code', Controller.delete);

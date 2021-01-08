@@ -17,6 +17,14 @@ class Controller {
         return res.status(400).json(users);
     }
 
+    async getUsersEnum(req, res) {
+        const users = await Service.getUsersEnum();
+        if (!users.error) {
+            return res.status(200).json(users);
+        }
+        return res.status(400).json(users);
+    }
+
     async findOne(req, res) {
         const code = req.params.code;
         const user = await Service.findOne(code);

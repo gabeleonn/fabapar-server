@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { roles, department } = require('../enums');
+const Item = require('../Equipment/Model');
 
 const Model = require('./Model');
 
@@ -28,7 +29,10 @@ class Service {
 
     async findOne(code) {
         try {
-            let user = await Model.findOne({ where: { code } });
+            let user = await Model.findOne({
+                where: { code },
+                include: { model: Item, as: 'equipments', foreignKey: 'code' },
+            });
             if (user) {
                 return user;
             }

@@ -4,7 +4,11 @@ class User extends Model {
     static init(connection) {
         super.init(
             {
-                code: DataTypes.INTEGER,
+                code: {
+                    type: DataTypes.INTEGER,
+                    primaryKey: true,
+                    unique: true,
+                },
                 firstname: DataTypes.STRING,
                 lastname: DataTypes.STRING,
                 branch: DataTypes.STRING,
@@ -20,10 +24,7 @@ class User extends Model {
     }
 
     static associate(models) {
-        this.hasMany(models.Item, {
-            foreignKey: 'user_id',
-            as: 'equipments',
-        });
+        this.hasMany(models.Item, { foreignKey: 'user_id', as: 'equipments' });
         // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }
 }

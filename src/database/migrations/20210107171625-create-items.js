@@ -37,10 +37,6 @@ module.exports = {
                 defaultValue: status.default,
                 allowNull: false,
             },
-            department: {
-                type: Sequelize.ENUM(department.enum),
-                allowNull: true,
-            },
             user_id: {
                 type: Sequelize.STRING,
                 allowNull: true,

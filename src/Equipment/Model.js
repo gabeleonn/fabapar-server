@@ -10,7 +10,6 @@ class Item extends Model {
                 type: DataTypes.STRING,
                 specs: DataTypes.STRING,
                 description: DataTypes.STRING,
-                department: DataTypes.ENUM(department.enum),
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),
                 user_id: DataTypes.INTEGER,
@@ -26,7 +25,10 @@ class Item extends Model {
             foreignKey: 'equipment_id',
             as: 'maintenances',
         });
-        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+        this.belongsTo(models.User, {
+            foreignKey: 'user_id',
+            as: 'user',
+        });
     }
 }
 

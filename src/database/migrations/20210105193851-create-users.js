@@ -5,12 +5,6 @@ const { roles, department } = require('../../enums');
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('Users', {
-            id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-            },
             code: {
                 type: Sequelize.STRING,
                 allowNull: false,

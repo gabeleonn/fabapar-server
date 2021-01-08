@@ -1,5 +1,7 @@
 const Model = require('./Model');
 const Maintenance = require('./Maintenance');
+const { Service: userService } = require('../User');
+const User = require('../User/Model');
 
 class Service {
     async create(equipment) {
@@ -14,28 +16,13 @@ class Service {
                 };
             }
 
-            if (equipment.status === 'FIXO' && equipment.department === '') {
-                console.log('wqe are here');
-                return {
-                    error:
-                        'Bad Request: Para equipamentos fixos deve-se ter o departamento.',
-                };
-            }
-            if (equipment.status !== 'FIXO') {
-                equipment = { ...equipment, department: null };
-            }
             if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
                 return {
                     error:
                         'Bad Request: Para emprestimos deve-se ter um usuário.',
                 };
             }
-            if (
-                equipment.status !== 'EMPRESTADO' ||
-                equipment.status !== 'FIXO'
-            ) {
-                equipment = { ...equipment, user_id: null };
-            }
+
             equipment = {
                 ...equipment,
                 description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
@@ -54,11 +41,51 @@ class Service {
         try {
             return await Model.findAll({
                 where: { status: at },
-                include: [{ model: Maintenance, as: 'maintenances' }],
+                include: [
+                    { model: Maintenance, as: 'maintenances' },
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['department', 'firstname', 'lastname'],
+                    },
+                ],
             });
         } catch (e) {
             console.log(e);
             return { error: 'Server Error: ?' };
+        }
+    }
+
+    async update(id, equipment) {
+        try {
+            const {
+                user_id,
+                warranty,
+                status,
+                details,
+                maintainer,
+            } = equipment;
+            if (warranty !== '' && maintainer !== '') {
+                let maintenance = {
+                    warranty,
+                    maintainer,
+                    details,
+                    equipment_id: id,
+                };
+                await Maintenance.create(maintenance);
+            }
+
+            let result = await Model.update(
+                { user_id, status },
+                { where: { id } }
+            );
+            if (result[0] === 1) {
+                return await Model.findOne({ where: { id } });
+            }
+            return { error: 'Bad Request: Este campo não pode ser alterado.' };
+        } catch (e) {
+            console.log(e);
+            return { error: 'Server Error : ?' };
         }
     }
 

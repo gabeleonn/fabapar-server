@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 //MIDDLEWARES
+app.use('/uploads', express.static('uploads'));
 
 //ROUTES
 app.use('/v1', routes);

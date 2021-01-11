@@ -3,7 +3,7 @@ const Maintenance = require('./Maintenance');
 const User = require('../User/Model');
 
 class Service {
-    async create(equipment) {
+    async create(equipment, file) {
         try {
             let maintenance = { ...equipment.maintenance };
             delete equipment.maintenance;
@@ -25,6 +25,7 @@ class Service {
             equipment = {
                 ...equipment,
                 description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
+                file: `${file.path}`,
             };
             let newEquipment = await Model.create(equipment);
             maintenance = { ...maintenance, equipment_id: newEquipment.id };

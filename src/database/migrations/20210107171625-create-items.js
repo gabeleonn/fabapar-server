@@ -37,6 +37,14 @@ module.exports = {
                 defaultValue: status.default,
                 allowNull: false,
             },
+            file: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            price: {
+                type: Sequelize.FLOAT(10, 2),
+                allowNull: true,
+            },
             user_id: {
                 type: Sequelize.STRING,
                 allowNull: true,

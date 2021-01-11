@@ -2,7 +2,7 @@ const Service = require('./Service');
 
 class Controller {
     async create(req, res) {
-        let equipment = await Service.create(req.body);
+        let equipment = await Service.create(req.body, req.file);
         if (!equipment.error) {
             return res.json(equipment);
         }

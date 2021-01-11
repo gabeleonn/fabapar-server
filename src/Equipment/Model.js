@@ -9,6 +9,8 @@ class Item extends Model {
                 brand: DataTypes.STRING,
                 type: DataTypes.STRING,
                 specs: DataTypes.STRING,
+                file: DataTypes.STRING,
+                price: DataTypes.FLOAT,
                 description: DataTypes.STRING,
                 category: DataTypes.ENUM(categories.enum),
                 status: DataTypes.ENUM(status.enum),

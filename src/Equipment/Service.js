@@ -37,10 +37,9 @@ class Service {
         }
     }
 
-    async findAll(at) {
+    async findAll() {
         try {
             return await Model.findAll({
-                where: { status: at },
                 include: [
                     { model: Maintenance, as: 'maintenances' },
                     {

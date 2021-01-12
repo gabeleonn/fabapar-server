@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-router.get('/:at', Controller.findAll);
+router.get('/', Controller.findAll);
 router.delete('/:id', Controller.delete);
 router.patch('/:id', Controller.update);
 router.post('/', upload.single('file'), Controller.create);

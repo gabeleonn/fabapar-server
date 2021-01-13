@@ -64,20 +64,48 @@ class Service {
                 details,
                 maintainer,
             } = equipment;
-            if (warranty !== '' && maintainer !== '') {
-                let maintenance = {
-                    warranty,
-                    maintainer,
-                    details,
-                    equipment_id: id,
+
+            let updatable = await Model.findOne({ where: { id } });
+            if (updatable.status === 'DESCARTADO') {
+                return {
+                    error:
+                        'Bad Request: Esse equipamento foi descartado e não pode ser alterado.',
                 };
-                await Maintenance.create(maintenance);
             }
 
-            let result = await Model.update(
-                { user_id, status },
-                { where: { id } }
-            );
+            let toUpdate = {};
+
+            switch (status) {
+                case 'MANUTENÇÃO':
+                    if (warranty !== '' && maintainer !== '') {
+                        let maintenance = {
+                            warranty,
+                            maintainer,
+                            details,
+                            equipment_id: id,
+                        };
+                        await Maintenance.create(maintenance);
+                        toUpdate = { status };
+                    }
+                case 'DISPONÍVEL':
+                    toUpdate = { user_id: null, status };
+                    break;
+                case 'DESCARTADO':
+                    toUpdate = { status };
+                    break;
+                case 'EMPRESTADO':
+                    toUpdate = { user_id, status };
+                    break;
+                case 'FIXO':
+                    toUpdate = { user_id, status };
+                    break;
+                default:
+                    return {
+                        error: 'Bad Request: Estado do item é indispensável.',
+                    };
+            }
+
+            let result = await Model.update(toUpdate, { where: { id } });
             if (result[0] === 1) {
                 return await Model.findOne({ where: { id } });
             }

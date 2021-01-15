@@ -55,6 +55,14 @@ class Service {
         }
     }
 
+    async updatable(id) {
+        let updatable = await Model.findOne({ where: { id } });
+        if (updatable.status === 'DESCARTADO') {
+            return false;
+        }
+        return true;
+    }
+
     async update(id, equipment) {
         try {
             const {
@@ -65,11 +73,12 @@ class Service {
                 maintainer,
             } = equipment;
 
-            let updatable = await Model.findOne({ where: { id } });
-            if (updatable.status === 'DESCARTADO') {
+            let updatable = await this.updatable(id);
+
+            if (!updatable) {
                 return {
                     error:
-                        'Bad Request: Esse equipamento foi descartado e não pode ser alterado.',
+                        'Bad Request: Esse item foi descartado e não pode ser alterado.',
                 };
             }
 
@@ -118,6 +127,14 @@ class Service {
 
     async delete(id) {
         try {
+            let updatable = await this.updatable(id);
+
+            if (!updatable) {
+                return {
+                    error:
+                        'Bad Request: Esse item foi descartado e não pode ser deletado.',
+                };
+            }
             return await Model.destroy({ where: { id } });
         } catch (e) {
             console.log(e);

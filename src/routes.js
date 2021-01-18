@@ -4,9 +4,11 @@ const router = new Router();
 
 const User = require('./User');
 const Equipment = require('./Equipment');
+const auth = require('./middlewares/auth');
 
-router.use('/users', User.routes);
+router.post('/login', User.Controller.login);
+router.use('/users', auth, User.routes);
 
-router.use('/equipments', Equipment.routes);
+router.use('/equipments', auth, Equipment.routes);
 
 module.exports = router;

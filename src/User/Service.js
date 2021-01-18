@@ -4,6 +4,9 @@ const Item = require('../Equipment/Model');
 
 const Model = require('./Model');
 
+const jwt = require('jsonwebtoken');
+const { auth } = require('../config');
+
 class Service {
     async findAll() {
         try {
@@ -101,14 +104,22 @@ class Service {
 
     async login(user) {
         return (await this.comparePassword(user))
-            ? null
+            ? this.generateToken(user.code)
             : { error: 'Bad Request: Senha e/ou Usuário incorretos.' };
     }
 
     async comparePassword(user) {
-        let { email, password } = user;
-        let dbUser = await Model.findOne({ where: { email } });
+        let { code, password } = user;
+        let dbUser = await Model.findOne({ where: { code } });
         return await bcrypt.compare(password, dbUser.password);
+    }
+
+    async generateToken(code) {
+        let dbUser = await Model.findOne({ where: { code } });
+        let token = await jwt.sign({ dbUser }, auth.secret, {
+            expiresIn: auth.expiresAt,
+        });
+        return { token };
     }
 
     async cleanUser(user) {

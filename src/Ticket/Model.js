@@ -1,9 +1,17 @@
 const { Model, DataTypes } = require('sequelize');
 
+const { ticket } = require('../enums');
+
 class Ticket extends Model {
     static init(connection) {
         super.init(
-            {},
+            {
+                description: DataTypes.STRING,
+                category: DataTypes.ENUM(ticket.categories.enum),
+                status: DataTypes.ENUM(ticket.status.enum),
+                priority: DataTypes.ENUM(ticket.priority.enum),
+                user_id: DataTypes.STRING,
+            },
             {
                 sequelize: connection,
             }
@@ -11,8 +19,7 @@ class Ticket extends Model {
     }
 
     static associate(models) {
-        //this.hasMany(models.Item, { foreignKey: 'user_id', as: 'equipments' });
-        // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
+        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     }
 }
 

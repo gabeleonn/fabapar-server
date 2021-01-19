@@ -12,4 +12,24 @@ module.exports = {
         enum: ['DISPONÍVEL', 'MANUTENÇÃO', 'EMPRESTADO', 'FIXO', 'DESCARTADO'],
     },
     roles: { default: 'NORMAL', enum: ['SUPER', 'ADMIN', 'NORMAL'] },
+    ticket: {
+        categories: {
+            default: 'hardware',
+            enum: ['hardware', 'software', 'rede', 'plataforma'],
+        },
+        priority: {
+            default: 'low',
+            enum: ['low', 'medium', 'high'],
+        },
+        status: {
+            default: 'entrada',
+            enum: [
+                'entrada',
+                'em progresso',
+                'aguardando terceiros',
+                'concluído',
+                'perdido',
+            ],
+        },
+    },
 };

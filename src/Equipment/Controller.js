@@ -21,7 +21,7 @@ class Controller {
         let id = req.params.id;
         let deleted = await Service.delete(id);
         if (!deleted.error) {
-            return res.status(204);
+            return res.status(204).json();
         }
         return res.status(400).json(deleted);
     }
@@ -30,7 +30,7 @@ class Controller {
         let id = req.params.id;
         let updated = await Service.update(id, req.body);
         if (typeof updated.error === 'undefined') {
-            return res.status(204);
+            return res.status(204).json();
         }
         return res.status(400).json(updated);
     }

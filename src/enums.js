@@ -25,7 +25,7 @@ module.exports = {
             default: 'entrada',
             enum: [
                 'entrada',
-                'em progresso',
+                'em andamento',
                 'aguardando terceiros',
                 'concluído',
                 'perdido',

@@ -25,7 +25,7 @@ class User extends Model {
 
     static associate(models) {
         this.hasMany(models.Item, { foreignKey: 'user_id', as: 'equipments' });
-        this.hasMany(models.Ticket, { foreignKey: 'code', as: 'tickets' });
+        this.hasMany(models.Ticket, { foreignKey: 'user_id', as: 'tickets' });
     }
 }
 

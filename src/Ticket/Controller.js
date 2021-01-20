@@ -35,7 +35,9 @@ class Controller {
 
     async delete(req, res) {
         let { id, code } = req.body;
+
         let deleted = await Service.delete(id, code);
+
         if (!deleted.error) {
             return res.status(204).json();
         }

@@ -5,15 +5,7 @@ const User = require('../User/Model');
 class Service {
     async create(equipment, file) {
         try {
-            let maintenance = { ...equipment.maintenance };
             delete equipment.maintenance;
-            if (typeof maintenance.warranty === 'undefined') {
-                maintenance = {
-                    warranty: '2019-01-01',
-                    maintainer: 'SISTEMA',
-                    details: 'Criado sem ter manutenção.',
-                };
-            }
 
             if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
                 return {
@@ -22,14 +14,16 @@ class Service {
                 };
             }
 
+            if (equipment.status === 'DISPONÍVEL' && !!equipment.user_id) {
+                delete equipment.user_id;
+            }
+
             equipment = {
                 ...equipment,
                 description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
                 file: `${file.path}`,
             };
             let newEquipment = await Model.create(equipment);
-            maintenance = { ...maintenance, equipment_id: newEquipment.id };
-            await Maintenance.create(maintenance);
             return newEquipment;
         } catch (e) {
             console.log(e);

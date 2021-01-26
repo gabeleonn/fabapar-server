@@ -63,6 +63,14 @@ class Service {
         return true;
     }
 
+    async previousState(id) {
+        let updatable = await Model.findOne({ where: { id } });
+        if (updatable) {
+            return updatable.status;
+        }
+        return null;
+    }
+
     async update(id, equipment) {
         try {
             const {
@@ -83,19 +91,22 @@ class Service {
             }
 
             let toUpdate = {};
+            if ((await this.previousState(id)) === 'MANUTENÇÃO') {
+                if (warranty !== '' && maintainer !== '') {
+                    let maintenance = {
+                        warranty,
+                        maintainer,
+                        details,
+                        equipment_id: id,
+                    };
+                    await Maintenance.create(maintenance);
+                    console.log('we are here');
+                }
+            }
 
             switch (status) {
                 case 'MANUTENÇÃO':
-                    if (warranty !== '' && maintainer !== '') {
-                        let maintenance = {
-                            warranty,
-                            maintainer,
-                            details,
-                            equipment_id: id,
-                        };
-                        await Maintenance.create(maintenance);
-                        toUpdate = { status };
-                    }
+                    toUpdate = { status };
                 case 'DISPONÍVEL':
                     toUpdate = { user_id: null, status };
                     break;

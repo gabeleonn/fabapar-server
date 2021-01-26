@@ -1,9 +1,23 @@
 const User = require('../User/Model');
 const Model = require('./Model');
 
+//const { nodemailer } = require('../config/');
+//const from = 'Gabriel Leon <gableonn@gmail.com>'
+
 class Service {
     async create(ticket) {
         try {
+            //send creation email.
+            //Email de criação
+            // nodemailer
+            //     .sendMail({
+            //         from: 'Gabriel Leon <gableonn@gmail.com>',
+            //         to: 'ti.suporte@fabapar.com.br',
+            //         subject: 'Teste nodemailer',
+            //         html: '<h1>Hello World</h1>',
+            //     })
+            //     .then((message) => console.log(message))
+            //     .catch((err) => console.log(err));
             return await Model.create(ticket);
         } catch (e) {
             console.log(e);
@@ -49,6 +63,22 @@ class Service {
     async update(id, toUpdate, code) {
         try {
             if (await this.checkUser(id, code)) {
+                switch (toUpdate.status) {
+                    case 'perdido':
+                        //send lost email
+                        break;
+                    case 'em andamento':
+                        //send accept email
+                        break;
+                    case 'aguardando terceiros':
+                        //send awaiting email
+                        break;
+                    case 'concluído':
+                        //send concluded email
+                        break;
+                    default:
+                        break;
+                }
                 let result = await Model.update(toUpdate, { where: { id } });
                 if (result[0] === 1) {
                     return await Model.findOne({ where: { id } });

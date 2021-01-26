@@ -9,5 +9,6 @@ router.get('/:code', Controller.find);
 router.get('/', Controller.findAll);
 router.delete('/', Controller.delete);
 router.patch('/:id', Controller.update);
+router.patch('/drag/:id', Controller.updateStatus);
 
 module.exports = router;

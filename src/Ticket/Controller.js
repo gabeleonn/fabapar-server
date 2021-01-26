@@ -57,6 +57,30 @@ class Controller {
         }
         return res.status(400).json(updated);
     }
+
+    async updateStatus(req, res) {
+        let { code, status, priority, category } = req.body;
+        let { id } = req.params;
+        let updated = '';
+        if (priority === null && category === null) {
+            updated = await Service.update(id, { status }, code);
+        } else if (priority === null && category !== null) {
+            updated = await Service.update(id, { status, category }, code);
+        } else if (priority !== null && category === null) {
+            updated = await Service.update(id, { status, priority }, code);
+        } else if (priority !== null && category !== null) {
+            updated = await Service.update(
+                id,
+                { status, priority, category },
+                code
+            );
+        }
+
+        if (typeof updated.error === 'undefined') {
+            return res.status(200).json(updated);
+        }
+        return res.status(400).json(updated);
+    }
 }
 
 module.exports = new Controller();

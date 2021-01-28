@@ -6,6 +6,7 @@ class Ticket extends Model {
     static init(connection) {
         super.init(
             {
+                title: DataTypes.STRING,
                 description: DataTypes.STRING,
                 category: DataTypes.ENUM(ticket.categories.enum),
                 status: DataTypes.ENUM(ticket.status.enum),

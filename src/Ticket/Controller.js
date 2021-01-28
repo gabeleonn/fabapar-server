@@ -2,13 +2,21 @@ const Service = require('./Service');
 
 class Controller {
     async create(req, res) {
-        let { user_id, description, status, category, priority } = req.body;
+        let {
+            user_id,
+            description,
+            status,
+            category,
+            priority,
+            title,
+        } = req.body;
         let ticket = await Service.create({
             user_id,
             description,
             status,
             category,
             priority,
+            title,
         });
         if (!ticket.error) {
             return res.json(ticket);

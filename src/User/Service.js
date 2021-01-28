@@ -116,7 +116,7 @@ class Service {
 
     async generateToken(code) {
         let dbUser = await Model.findOne({ where: { code } });
-        let token = await jwt.sign({ dbUser }, auth.secret, {
+        let token = await jwt.sign({ ...dbUser }, auth.secret, {
             expiresIn: auth.expiresAt,
         });
         return { token };

@@ -1,3 +1,4 @@
+const Item = require('../Equipment/Model');
 const User = require('../User/Model');
 const Model = require('./Model');
 
@@ -51,6 +52,7 @@ class Service {
                             'department',
                             'branch',
                         ],
+                        include: 'equipments',
                     },
                 ],
             });

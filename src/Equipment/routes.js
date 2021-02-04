@@ -5,14 +5,24 @@ const router = new Router();
 
 const Controller = require('./Controller');
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
+let storage = null;
+try {
+    storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            if (typeof req.file !== 'undefined') {
+                cb(null, 'uploads/');
+            }
+        },
+        filename: function (req, file, cb) {
+            if (typeof req.file !== 'undefined') {
+                cb(null, file.originalname);
+            }
+        },
+    });
+} catch (error) {
+    console.log(error);
+}
+
 const upload = multer({ storage });
 
 router.get('/', Controller.findAll);

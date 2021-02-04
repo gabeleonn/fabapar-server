@@ -21,7 +21,7 @@ class Service {
             equipment = {
                 ...equipment,
                 description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
-                file: `${file.path}`,
+                file: `${typeof file === 'undefined' ? null : file.path}`,
             };
             let newEquipment = await Model.create(equipment);
             return newEquipment;

@@ -52,7 +52,6 @@ class Service {
                             'department',
                             'branch',
                         ],
-                        include: 'equipments',
                     },
                 ],
             });

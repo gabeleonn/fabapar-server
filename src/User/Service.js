@@ -21,6 +21,12 @@ class Service {
         try {
             let users = await Model.findAll({
                 attributes: ['code', 'firstname', 'lastname'],
+                include: [
+                    {
+                        model: Item,
+                        as: 'equipments',
+                    },
+                ],
             });
 
             return users;

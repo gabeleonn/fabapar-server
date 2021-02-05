@@ -9,6 +9,7 @@ class Controller {
             category,
             priority,
             title,
+            equipment_id,
         } = req.body;
         let ticket = await Service.create({
             user_id,
@@ -17,6 +18,7 @@ class Controller {
             category,
             priority,
             title,
+            equipment_id,
         });
         if (!ticket.error) {
             return res.json(ticket);

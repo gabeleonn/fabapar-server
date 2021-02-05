@@ -31,6 +31,10 @@ class Item extends Model {
             foreignKey: 'user_id',
             as: 'user',
         });
+        this.belongsTo(models.Ticket, {
+            foreignKey: 'id',
+            as: 'equipment',
+        });
     }
 }
 

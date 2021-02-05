@@ -12,6 +12,7 @@ class Ticket extends Model {
                 status: DataTypes.ENUM(ticket.status.enum),
                 priority: DataTypes.ENUM(ticket.priority.enum),
                 user_id: DataTypes.STRING,
+                equipment_id: DataTypes.INTEGER,
             },
             {
                 sequelize: connection,
@@ -21,6 +22,10 @@ class Ticket extends Model {
 
     static associate(models) {
         this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+        this.hasOne(models.Item, {
+            foreignKey: 'id',
+            as: 'equipment',
+        });
     }
 }
 

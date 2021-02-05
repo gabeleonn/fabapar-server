@@ -44,6 +44,16 @@ module.exports = {
                 onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',
             },
+            equipment_id: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'Items',
+                    key: 'id',
+                },
+                onDelete: 'SET NULL',
+                onUpdate: 'CASCADE',
+            },
 
             createdAt: {
                 type: Sequelize.DATE,

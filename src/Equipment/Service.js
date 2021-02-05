@@ -6,6 +6,7 @@ class Service {
     async create(equipment, file) {
         try {
             delete equipment.maintenance;
+            console.log(equipment);
 
             if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
                 return {

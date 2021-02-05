@@ -24,7 +24,6 @@ class Maintenance extends Model {
             foreignKey: 'equipment_id',
             as: 'equipments',
         });
-        // this.hasMany(models.Order, { foreignKey: 'donor_id', as: 'donor'} );
     }
 }
 

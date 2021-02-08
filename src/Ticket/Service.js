@@ -30,6 +30,10 @@ class Service {
         try {
             return await Model.findAll({
                 where: { user_id: code },
+                include: {
+                    model: Item,
+                    as: 'equipment',
+                },
             });
         } catch (e) {
             console.log(e);

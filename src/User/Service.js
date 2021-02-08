@@ -120,11 +120,19 @@ class Service {
         return await bcrypt.compare(password, dbUser.password);
     }
 
-    async generateToken(code) {
-        let dbUser = await Model.findOne({ where: { code } });
-        let token = await jwt.sign({ ...dbUser }, auth.secret, {
-            expiresIn: auth.expiresAt,
+    async generateToken(id) {
+        let dbUser = await Model.findOne({
+            where: { code: id },
+            include: { model: Item, as: 'equipments', foreignKey: 'code' },
         });
+        let { equipments, code, email, firstname, lastname, role } = dbUser;
+        let token = await jwt.sign(
+            { equipments, code, email, firstname, lastname, role },
+            auth.secret,
+            {
+                expiresIn: auth.expiresAt,
+            }
+        );
         return { token };
     }
 

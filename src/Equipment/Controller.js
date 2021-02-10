@@ -2,13 +2,11 @@ const Service = require('./Service');
 
 class Controller {
     async create(req, res) {
-        console.log(req);
-        // let equipment = await Service.create(req.body, req);
-        // if (!equipment.error) {
-        //     return res.json(equipment);
-        // }
-        // return res.json(equipment);
-        return res.json();
+        let equipment = await Service.create(req.body, req.files);
+        if (!equipment.error) {
+            return res.json(equipment);
+        }
+        return res.json(equipment);
     }
 
     async findAll(req, res) {

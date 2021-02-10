@@ -3,31 +3,33 @@ const Maintenance = require('./Maintenance');
 const User = require('../User/Model');
 
 class Service {
-    async create(equipment, file) {
+    async create(equipment, files) {
         try {
-            delete equipment.maintenance;
-            if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
-                return {
-                    error:
-                        'Bad Request: Para emprestimos deve-se ter um usuário.',
-                };
-            }
+            console.log(files, equipment);
+            // delete equipment.maintenance;
+            // if (equipment.status === 'EMPRESTADO' && equipment.user_id === '') {
+            //     return {
+            //         error:
+            //             'Bad Request: Para emprestimos deve-se ter um usuário.',
+            //     };
+            // }
 
-            if (equipment.status === 'DISPONÍVEL' && !!equipment.user_id) {
-                delete equipment.user_id;
-            }
+            // if (equipment.status === 'DISPONÍVEL' && !!equipment.user_id) {
+            //     delete equipment.user_id;
+            // }
 
-            if (equipment.price === null || equipment.price === '') {
-                equipment.price = 0.0;
-            }
+            // if (equipment.price === null || equipment.price === '') {
+            //     equipment.price = 0.0;
+            // }
 
-            equipment = {
-                ...equipment,
-                description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
-                file: `${typeof file === 'undefined' ? null : file.path}`,
-            };
-            let newEquipment = await Model.create(equipment);
-            return newEquipment;
+            // equipment = {
+            //     ...equipment,
+            //     description: `${equipment.type} ${equipment.specs} | ${equipment.brand}`.toUpperCase(),
+            //     file: `${typeof file === 'undefined' ? null : files.path}`,
+            // };
+            // let newEquipment = await Model.create(equipment);
+            // return newEquipment;
+            return {};
         } catch (e) {
             console.log(e);
             return { error: 'Server Error: Contante um administrador.' };

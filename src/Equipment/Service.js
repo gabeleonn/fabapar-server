@@ -81,7 +81,7 @@ class Service {
         return null;
     }
 
-    async update(id, equipment) {
+    async update(id, equipment, oldFiles) {
         try {
             const {
                 user_id,
@@ -90,6 +90,15 @@ class Service {
                 details,
                 maintainer,
             } = equipment;
+
+            let files = {};
+            oldFiles.forEach((element) => {
+                if (element.fieldname === 'term') {
+                    files = { ...files, term: element };
+                } else if (element.fieldname === 'file') {
+                    files = { ...files, file: element };
+                }
+            });
 
             let updatable = await this.updatable(id);
 
@@ -100,7 +109,6 @@ class Service {
                 };
             }
 
-            let toUpdate = {};
             if ((await this.previousState(id)) === 'MANUTENÇÃO') {
                 if (warranty !== '' && maintainer !== '') {
                     let maintenance = {
@@ -110,24 +118,48 @@ class Service {
                         equipment_id: id,
                     };
                     await Maintenance.create(maintenance);
-                    console.log('we are here');
                 }
+            }
+
+            let toUpdate = {};
+
+            let file = typeof files.file !== 'undefined';
+            let term = typeof files.term !== 'undefined';
+
+            if (file && term) {
+                toUpdate = {
+                    ...toUpdate,
+                    file: files.file.path,
+                    term: files.term.path,
+                };
+            } else if (file && !term) {
+                toUpdate = { ...toUpdate, file: files.file.path };
+            } else if (!file && term) {
+                toUpdate = { ...toUpdate, term: files.term.path };
             }
 
             switch (status) {
                 case 'MANUTENÇÃO':
-                    toUpdate = { status };
+                    toUpdate = { ...toUpdate, status };
                 case 'DISPONÍVEL':
-                    toUpdate = { user_id: null, status };
+                    toUpdate = { ...toUpdate, user_id: null, status };
                     break;
                 case 'DESCARTADO':
-                    toUpdate = { status };
+                    toUpdate = { ...toUpdate, status };
                     break;
                 case 'EMPRESTADO':
-                    toUpdate = { user_id, status };
+                    toUpdate = {
+                        ...toUpdate,
+                        user_id,
+                        status,
+                    };
                     break;
                 case 'FIXO':
-                    toUpdate = { user_id, status };
+                    toUpdate = {
+                        ...toUpdate,
+                        user_id,
+                        status,
+                    };
                     break;
                 default:
                     return {

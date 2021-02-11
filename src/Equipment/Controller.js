@@ -28,7 +28,7 @@ class Controller {
 
     async update(req, res) {
         let id = req.params.id;
-        let updated = await Service.update(id, req.body);
+        let updated = await Service.update(id, req.body, req.files);
         if (typeof updated.error === 'undefined') {
             return res.status(204).json();
         }

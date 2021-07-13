@@ -1,4 +1,4 @@
-# Sistema de Gerênciamento do Setor de TI da FABAPAR (Back-end)
+# Sistema de Gerênciamento do Setor de TI da FABAPAR (Back-end) [DESCONTINUADO]
 
 > Back-end desenvolvido com Node.js, Express & MongoDB
 
